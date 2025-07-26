@@ -1,8 +1,9 @@
 const students = [
-  { name: "John Doe", roll: "1001" },
-  { name: "Jane Smith", roll: "1002" },
-  { name: "Alex Roy", roll: "1003" }
+  { name: "lakshman", roll: "1" },
+  { name: "dilip", roll: "2" },
+  { name: "subbu", roll: "3" }
 ];
+
 
 const PASSWORD = "teacher123"; // Simple hardcoded login
 
@@ -54,3 +55,10 @@ function submitAttendance() {
       alert("Error submitting attendance.");
     });
 }
+fetch("https://script.google.com/macros/s/AKfycbz2_0yKaSZ4WTO9CfddYaoXV_X4Vr1s7mKSDXQxbGyM51I4S6IUn6fhp4vM6QlimHiP/exec", {
+  method: "POST",
+  body: JSON.stringify({ date, attendance }),
+  headers: {
+    "Content-Type": "application/json"
+  }
+})
