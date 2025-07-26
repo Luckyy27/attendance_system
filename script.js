@@ -62,3 +62,8 @@ fetch("https://script.google.com/macros/s/AKfycbz2_0yKaSZ4WTO9CfddYaoXV_X4Vr1s7m
     "Content-Type": "application/json"
   }
 })
+body: JSON.stringify({
+  date: date,
+  attendance: attendanceData
+})
+const date = document.getElementById("dateInput").value;
