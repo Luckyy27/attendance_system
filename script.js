@@ -1,17 +1,19 @@
+const PASSWORD = "teacher123"; // Temporary login password
+const API_URL = "YOUR_SCRIPT_URL_HERE"; // Replace with your deployed script URL
 
-const students = [
-  { name: "lakshman", roll: "1" },
-  { name: "dilip", roll: "2" },
-  { name: "subbu", roll: "3" }
-];
-
-const PASSWORD = "teacher123"; // Simple hardcoded login
+let students = [];
 
 function login() {
   const inputPass = document.getElementById("password").value;
   if (inputPass === PASSWORD) {
-    document.getElementById("attendanceForm").classList.remove("hidden");
-    renderStudents();
+    fetch(API_URL)
+      .then(res => res.json())
+      .then(data => {
+        students = data;
+        document.getElementById("attendanceForm").classList.remove("hidden");
+        renderStudents();
+      })
+      .catch(() => alert("Error fetching students."));
   } else {
     alert("Invalid password!");
   }
@@ -22,38 +24,35 @@ function renderStudents() {
   container.innerHTML = "";
   students.forEach(student => {
     container.innerHTML += `
-      <div class="flex justify-between items-center mb-2">
-        <span>${student.name} (${student.roll})</span>
-        <select id="status-${student.roll}" class="border p-1">
-          <option value="P">P</option>
-          <option value="A">A</option>
-        </select>
+      <div class="p-3 border rounded">
+        <div class="font-semibold mb-1">${student.name} (${student.roll})</div>
+        <div class="flex gap-4">
+          <label><input type="radio" name="status-${student.roll}" value="P" checked /> P</label>
+          <label><input type="radio" name="status-${student.roll}" value="A" /> A</label>
+          <label><input type="radio" name="status-${student.roll}" value="L" /> L</label>
+        </div>
       </div>
     `;
   });
 }
 
 function submitAttendance() {
-  const dateInput = document.querySelector("input[type='date']");
-  const date = dateInput ? dateInput.value : new Date().toLocaleDateString('en-GB').replaceAll('/', '-');
+  const date = document.getElementById("datePicker").value;
+  if (!date) return alert("Please select a date");
+
   const attendance = students.map(s => {
-    const status = document.getElementById(`status-${s.roll}`).value;
+    const radios = document.getElementsByName(`status-${s.roll}`);
+    let status = "P";
+    radios.forEach(r => { if (r.checked) status = r.value; });
     return { roll: s.roll, status };
   });
 
-  fetch("https://script.google.com/macros/s/YOUR_DEPLOYED_SCRIPT_ID/exec", {
+  fetch(API_URL, {
     method: "POST",
     body: JSON.stringify({ date, attendance }),
-    headers: {
-      "Content-Type": "application/json"
-    }
+    headers: { "Content-Type": "application/json" }
   })
     .then(res => res.text())
-    .then(msg => {
-      alert("✅ Attendance submitted successfully!");
-    })
-    .catch(err => {
-      alert("❌ Error submitting attendance.");
-      console.error(err);
-    });
+    .then(msg => alert("Attendance submitted successfully!"))
+    .catch(err => alert("Error submitting attendance."));
 }
