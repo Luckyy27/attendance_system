@@ -40,7 +40,7 @@ function submitAttendance() {
     return { roll: s.roll, status };
   });
 
-  fetch("https://script.google.com/macros/s/AKfycbz2_0yKaSZ4WTO9CfddYaoXV_X4Vr1s7mKSDXQxbGyM51I4S6IUn6fhp4vM6QlimHiP/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbwL6ALKLw8oPLzq5utke_Nf3Pv_4qsoZTRvD8QZ5j8c8MC0NmRqtQ8BwvNEl8j8Vg4/exec", {
     method: "POST",
     body: JSON.stringify({ date, attendance }),
     headers: {
@@ -65,5 +65,8 @@ fetch("https://script.google.com/macros/s/AKfycbz2_0yKaSZ4WTO9CfddYaoXV_X4Vr1s7m
 body: JSON.stringify({
   date: date,
   attendance: attendanceData
-})
-const date = document.getElementById("dateInput").value;
+});
+
+const date = document.querySelector("input[type='date']").value;
+
+
