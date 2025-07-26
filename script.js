@@ -1,9 +1,9 @@
+
 const students = [
   { name: "lakshman", roll: "1" },
   { name: "dilip", roll: "2" },
   { name: "subbu", roll: "3" }
 ];
-
 
 const PASSWORD = "teacher123"; // Simple hardcoded login
 
@@ -22,7 +22,7 @@ function renderStudents() {
   container.innerHTML = "";
   students.forEach(student => {
     container.innerHTML += `
-      <div class="flex justify-between items-center">
+      <div class="flex justify-between items-center mb-2">
         <span>${student.name} (${student.roll})</span>
         <select id="status-${student.roll}" class="border p-1">
           <option value="P">P</option>
@@ -34,13 +34,14 @@ function renderStudents() {
 }
 
 function submitAttendance() {
-  const date = new Date().toLocaleDateString('en-GB').replaceAll('/', '-');
+  const dateInput = document.querySelector("input[type='date']");
+  const date = dateInput ? dateInput.value : new Date().toLocaleDateString('en-GB').replaceAll('/', '-');
   const attendance = students.map(s => {
     const status = document.getElementById(`status-${s.roll}`).value;
     return { roll: s.roll, status };
   });
 
-  fetch("https://script.google.com/macros/s/AKfycbwL6ALKLw8oPLzq5utke_Nf3Pv_4qsoZTRvD8QZ5j8c8MC0NmRqtQ8BwvNEl8j8Vg4/exec", {
+  fetch("https://script.google.com/macros/s/YOUR_DEPLOYED_SCRIPT_ID/exec", {
     method: "POST",
     body: JSON.stringify({ date, attendance }),
     headers: {
@@ -49,24 +50,10 @@ function submitAttendance() {
   })
     .then(res => res.text())
     .then(msg => {
-      alert("Attendance submitted!");
+      alert("✅ Attendance submitted successfully!");
     })
     .catch(err => {
-      alert("Error submitting attendance.");
+      alert("❌ Error submitting attendance.");
+      console.error(err);
     });
 }
-fetch("https://script.google.com/macros/s/AKfycbz2_0yKaSZ4WTO9CfddYaoXV_X4Vr1s7mKSDXQxbGyM51I4S6IUn6fhp4vM6QlimHiP/exec", {
-  method: "POST",
-  body: JSON.stringify({ date, attendance }),
-  headers: {
-    "Content-Type": "application/json"
-  }
-})
-body: JSON.stringify({
-  date: date,
-  attendance: attendanceData
-});
-
-const date = document.querySelector("input[type='date']").value;
-
-
