@@ -1,5 +1,5 @@
-const PASSWORD = "teacher123"; // Temporary login password
-const API_URL = "YOUR_SCRIPT_URL_HERE"; // Replace with your deployed script URL
+const PASSWORD = "123456"; // Temporary login password
+const API_URL = "https://script.google.com/macros/s/AKfycbzUy7-vYB2d7gqw63GroPBzGhqJl-kmZjPgvN4He9alBO-s6E9_eWjervcU9jM5H4KS/exec"; // Replace with your deployed script URL
 
 let students = [];
 
